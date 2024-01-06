@@ -26,3 +26,4 @@ Route::resource('users', UserController::class)->only(['index', 'show']);
 Route::resource('perpustakaan', PerpustakaanController::class)->only(['index', 'show']);
 Route::resource('kategori', KategoriController::class)->only(['index', 'show']);
 Route::resource('buku', BukuController::class)->only(['index', 'show']);
+Route::get('/search', [BukuController::class, 'search']);
