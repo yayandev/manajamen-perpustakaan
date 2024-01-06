@@ -10,7 +10,7 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $buku = Buku::with('kategori:id,name,slug')->paginate(4);
+        $buku = Buku::with('kategori:id,name,slug')->orderBy('created_at', 'DESC')->paginate(4);
 
         return response()->json($buku);
     }
