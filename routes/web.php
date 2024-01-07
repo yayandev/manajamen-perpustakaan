@@ -21,7 +21,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::group(['middleware' => 'demomode'], function () {
+        Route::post('/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/{id}/resetpassword', [UserController::class, 'resetPassword'])->name('users.resetpassword');
+        Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::post('/userprofile', [UserController::class, 'changeProfile'])->name('userprofile');
+        Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
+    });
+
     Route::get('/', function () {
         $counts = [
             'users' => User::count(),
@@ -34,23 +45,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'onlyadmin'], function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
-        Route::get('/users/{id}/resetpassword', [UserController::class, 'resetPassword'])->name('users.resetpassword');
-        Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-        Route::post('/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-
 
         Route::prefix('perpustakaan')->group(function () {
             Route::get('/', [PerpustakaanController::class, 'index'])->name('perpustakaan');
             Route::post('/', [PerpustakaanController::class, 'store'])->name('perpustakaan.store');
-            Route::post('/destroy/{id}', [PerpustakaanController::class, 'destroy'])->name('perpustakaan.destroy');
-            Route::post('/update/{id}', [PerpustakaanController::class, 'update'])->name('perpustakaan.update');
         });
 
         Route::prefix('kategori')->group(function () {
             Route::get('/', [KategoriController::class, 'index'])->name('kategori');
             Route::post('/', [KategoriController::class, 'store'])->name('kategori.store');
-            Route::post('/destroy/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
-            Route::post('/update/{id}', [KategoriController::class, 'update'])->name('kategori.update');
+            Route::post('/destroy/{id}', [PerpustakaanController::class, 'destroy'])->name('perpustakaan.destroy');
+            Route::post('/update/{id}', [PerpustakaanController::class, 'update'])->name('perpustakaan.update');
         });
 
         Route::prefix('buku')->group(function () {
@@ -62,8 +67,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/userprofile', [UserController::class, 'userProfile'])->name('userprofile');
-    Route::post('/userprofile', [UserController::class, 'changeProfile'])->name('userprofile');
-    Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

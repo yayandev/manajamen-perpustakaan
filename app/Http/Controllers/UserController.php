@@ -65,6 +65,7 @@ class UserController extends Controller
             'confirmPassword' => 'required|same:newPassword',
         ]);
 
+
         $user = User::find(auth()->user()->id);
 
         if (!Hash::check($request->oldPassword, $user->password)) {
@@ -104,6 +105,7 @@ class UserController extends Controller
 
     public function resetPassword($id)
     {
+
         $user = User::find($id);
         if (!$user) {
             return redirect('/users')->with(['error' => 'User Not Found']);
