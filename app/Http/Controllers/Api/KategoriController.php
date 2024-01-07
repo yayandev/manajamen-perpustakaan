@@ -14,8 +14,9 @@ class KategoriController extends Controller
         return response()->json($kategoris);
     }
 
-    public function show(Kategori $kategori)
+    public function show($slug)
     {
+        $kategori = Kategori::where('slug', $slug)->with('buku')->first();
         return response()->json($kategori);
     }
 }

@@ -17,8 +17,19 @@ class BukuController extends Controller
 
     public function show($slug)
     {
-        $buku = Buku::with('kategori', 'user')->where('slug', $slug)->first();
-        return response()->json($buku);
+        $buku = Buku::with('kategori', 'user:id,name,profile_picture')->where('slug', $slug)->first();
+        if (!$buku) {
+            return response()->json([
+                'message' => 'buku not found',
+                'success' => false,
+                'data' => null
+            ], 404);
+        }
+        $bukuLainnya  = Buku::where('kategori_id', $buku->kategori_id)->where('id', '!=', $buku->id)->limit(4)->get();
+        return response()->json([
+            'data' => $buku,
+            'bukuLainnya' => $bukuLainnya
+        ]);
     }
 
     public function search(Request $request)
