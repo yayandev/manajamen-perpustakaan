@@ -226,7 +226,8 @@
                 $.ajax({
                     type: "GET",
                     url: "/api/buku/" + id,
-                    success: function(data) {
+                    success: function(response) {
+                        let data = response.data;
                         $('#formEdit').attr('action', '/buku/update/' + data.id)
                         $('#titleUpdate').val(data.title)
                         $('#imageUpdate').attr('src', data.image)
